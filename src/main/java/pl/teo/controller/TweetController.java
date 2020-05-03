@@ -1,5 +1,7 @@
 package pl.teo.controller;
 
+import org.owasp.html.HtmlPolicyBuilder;
+import org.owasp.html.PolicyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +25,14 @@ public class TweetController {
     public String addTweet (@RequestParam String tweetContent, HttpSession session){
         User user = userRepository.findByUserNameIgnoreCase((String)session.getAttribute("loggedUserName"));
         if (user != null){
-            Tweet tweet = new Tweet(user, tweetContent);
+            PolicyFactory policy = new HtmlPolicyBuilder()
+                    .allowElements("a")
+                    .allowUrlProtocols("https")
+                    .allowAttributes("href").onElements("a")
+                    .requireRelNofollowOnLinks()
+                    .toFactory();
+            String safeTweetContent = policy.sanitize(tweetContent);
+            Tweet tweet = new Tweet(user, safeTweetContent);
             tweetRepository.save(tweet);
         }
         return "redirect:home";
