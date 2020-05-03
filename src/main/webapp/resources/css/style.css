@@ -28,3 +28,12 @@ ul a:hover {
     border-style: inset;
     padding: 7px 3px 3px 7px;
 }
+#tweetText{
+    resize: none;
+}
+a{
+    color: orange;
+}
+.username{
+    color: greenyellow;
+}

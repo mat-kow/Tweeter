@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import pl.teo.entity.User;
 import pl.teo.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
@@ -25,17 +26,28 @@ public class LoginController {
     @RequestMapping(method = RequestMethod.POST, value = "login")
     public String login(@RequestParam String userName, @RequestParam String password, Model model) {
         if (userName == null){
+            model.addAttribute("errorFlag", "true");
             return "login.jsp";
         }
         User user = userRepository.findByUserNameIgnoreCase(userName);
         if (user == null){
+            model.addAttribute("errorFlag", "true");
             return "login.jsp";
         }
         if(BCrypt.checkpw(password, user.getPassword())){
             model.addAttribute("loggedUserName", user.getUserName());
             return "loginOk.jsp";
         }
+        model.addAttribute("errorFlag", "true");
+        return "login.jsp";
+    }
+
+    @RequestMapping("logout")
+    public String logout (SessionStatus status){
+        status.setComplete();
+        System.out.println("logout");
         return "redirect:home";
     }
+
 
 }

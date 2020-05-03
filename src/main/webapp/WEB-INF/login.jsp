@@ -18,6 +18,11 @@
     <h3>Zaloguj się</h3>
     <div id="form">
         <form method="post">
+            <%String errorFlag = (String)request.getAttribute("errorFlag");
+                if(errorFlag == "true"){
+                    %><span style="color:#ff0000">Niepoprawny login lub hasło</span><br/><br><%
+                }%>
+
             Nazwa użytkownika:<input type="text" name="userName"><br/><br/>
             Hasło: <input type="password" name="password"><br/><br/>
             <input type="submit" value="Zaloguj">

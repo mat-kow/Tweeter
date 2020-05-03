@@ -5,5 +5,5 @@
     <li><a href="#">User</a></li>
     <li><a href="login">Zaloguj</a></li>
     <li><a href="register">Rejestracja</a></li>
-    <li><a href="#">Wyloguj</a></li>
+    <li><a href="logout">Wyloguj</a></li>
 </ul><br>
