@@ -15,7 +15,7 @@
     <title>Rejestracja</title>
 </head>
 <body>
-<div id="header"><%@ include file="fragments/header.jsp"%></div>
+<div id="header"><%@ include file="../fragments/header.jsp"%></div>
 <h3>Zarejestruj się</h3>
 <div id="form">
     <form:form method="post" modelAttribute="user">

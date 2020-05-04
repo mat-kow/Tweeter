@@ -14,7 +14,7 @@
     <title>Zaloguj się</title>
 </head>
 <body>
-    <div id="header"><%@ include file="fragments/header.jsp"%></div>
+    <div id="header"><%@ include file="../fragments/header.jsp"%></div>
     <h3>Zaloguj się</h3>
     <div id="form">
         <form method="post">

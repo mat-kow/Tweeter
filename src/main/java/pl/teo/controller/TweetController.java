@@ -4,6 +4,8 @@ import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,18 +25,30 @@ public class TweetController {
 
     @RequestMapping(method = RequestMethod.POST, value = "addTweet")
     public String addTweet (@RequestParam String tweetContent, HttpSession session){
-        User user = userRepository.findByUserNameIgnoreCase((String)session.getAttribute("loggedUserName"));
-        if (user != null){
-            PolicyFactory policy = new HtmlPolicyBuilder()
-                    .allowElements("a")
-                    .allowUrlProtocols("https")
-                    .allowAttributes("href").onElements("a")
-                    .requireRelNofollowOnLinks()
-                    .toFactory();
-            String safeTweetContent = policy.sanitize(tweetContent);
-            Tweet tweet = new Tweet(user, safeTweetContent);
-            tweetRepository.save(tweet);
+        if (session.getAttribute("loggedUserName") == null){
+            return "redirect:login";
         }
+        User user = userRepository.findByUserNameIgnoreCase((String)session.getAttribute("loggedUserName"));
+        if(user == null){
+            return "redirect:login";
+        }
+        PolicyFactory policy = new HtmlPolicyBuilder()
+                .allowElements("a")
+                .allowUrlProtocols("https")
+                .allowAttributes("href").onElements("a")
+                .requireRelNofollowOnLinks()
+                .toFactory();
+        String safeTweetContent = policy.sanitize(tweetContent);
+        Tweet tweet = new Tweet(user, safeTweetContent);
+        tweetRepository.save(tweet);
         return "redirect:home";
+    }
+
+    @RequestMapping("tweet/{id}")
+    public String tweetInfo(@PathVariable long id, Model model){
+        model.addAttribute("hrefParam", "../");
+        Tweet tweet = tweetRepository.findById(id);
+        model.addAttribute("tweet", tweet);
+        return "tweetInfo";
     }
 }

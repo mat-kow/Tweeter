@@ -13,6 +13,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
+import org.springframework.web.servlet.view.ResourceBundleViewResolver;
 
 import javax.persistence.EntityManagerFactory;
 
@@ -38,9 +39,18 @@ public class AppConfig implements WebMvcConfigurer {
     @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("WEB-INF/");
+        viewResolver.setPrefix("WEB-INF/views/");
         viewResolver.setSuffix("");
+        viewResolver.setOrder(1);
         return viewResolver;
+    }
+
+    @Bean
+    public ViewResolver resourceBundleViewResolver(){
+        ResourceBundleViewResolver resourceBundleViewResolver = new ResourceBundleViewResolver();
+        resourceBundleViewResolver.setBasename("views");
+        resourceBundleViewResolver.setOrder(0);
+        return resourceBundleViewResolver;
     }
     @Override
     public void configureDefaultServletHandling(DefaultServletHandlerConfigurer configurer) {
