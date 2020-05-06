@@ -4,35 +4,29 @@ import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.teo.entity.Comment;
-import pl.teo.entity.Tweet;
 import pl.teo.entity.User;
 import pl.teo.repository.CommentRepository;
 import pl.teo.repository.TweetRepository;
 import pl.teo.repository.UserRepository;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @Controller
-public class TweetController {
+public class CommentController {
     @Autowired
-    public TweetRepository tweetRepository;
+    public CommentRepository commentRepository;
     @Autowired
     public UserRepository userRepository;
     @Autowired
-    public CommentRepository commentRepository;
+    public TweetRepository tweetRepository;
 
-    @RequestMapping(method = RequestMethod.POST, value = "addTweet")
-    public String addTweet (@RequestParam String tweetContent, HttpSession session){
-        if (session.getAttribute("loggedUserName") == null){
-            return "redirect:login";
-        }
+    @RequestMapping(value = "newComment", method = RequestMethod.POST)
+    public String newComment(@RequestParam long tweetId, @RequestParam String commentText, HttpSession session,
+                             @RequestParam String url){
         User user = userRepository.findByUserNameIgnoreCase((String)session.getAttribute("loggedUserName"));
         if(user == null){
             return "redirect:login";
@@ -43,20 +37,11 @@ public class TweetController {
                 .allowAttributes("href").onElements("a")
                 .requireRelNofollowOnLinks()
                 .toFactory();
-        String safeTweetContent = policy.sanitize(tweetContent);
-        Tweet tweet = new Tweet(user, safeTweetContent);
-        tweetRepository.save(tweet);
-        return "redirect:home";
-    }
+        String safeCommentText = policy.sanitize(commentText);
 
-    @RequestMapping("tweet/{id}")
-    public String tweetInfo(@PathVariable long id, Model model){
-        model.addAttribute("hrefParam", "../");
-        Tweet tweet = tweetRepository.findById(id);
-        model.addAttribute("tweet", tweet);
-        List<Comment> commentList = commentRepository.findAllByTweetIdOrderByCreatedAsc(id);
-        model.addAttribute("commentList", commentList);
-
-        return "tweetInfo";
+        Comment comment = new Comment(tweetRepository.findById(tweetId), user, safeCommentText);
+        commentRepository.save(comment);
+        url = url.replace("/Tweeter/","");
+        return "redirect:" + url;
     }
 }

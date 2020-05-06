@@ -25,7 +25,7 @@ public class LoginController {
 
     @RequestMapping(method = RequestMethod.POST, value = "login")
     public String login(@RequestParam String userName, @RequestParam String password, Model model) {
-        if (userName == null){
+        if (userName == null || userName.equals("")){
             model.addAttribute("errorFlag", "true");
             return "login.jsp";
         }

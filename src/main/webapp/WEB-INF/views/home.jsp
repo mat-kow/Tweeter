@@ -25,7 +25,7 @@
     %>
     <br/>
     <form method="post" action="addTweet">
-        <textarea name="tweetContent" cols="80" rows="3" id="tweetText" minlength="3" maxlength="140"
+        <textarea name="tweetContent" cols="80" rows="2" id="tweetText" minlength="3" maxlength="140"
                   placeholder="Czym chcesz podzielić się ze światem?"></textarea>
         <input type="submit" value="Wyślij"/>
     </form>

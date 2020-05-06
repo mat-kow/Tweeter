@@ -17,9 +17,18 @@ public class Comment {
     private User user;
     @CreationTimestamp
     private Timestamp created;
-    @Size(min = 1, max = 10)
+    @Size(min = 1, max = 41)
     @Column(length = 11)
     private String text;
+
+    public Comment(Tweet tweet, User user, @Size(min = 1, max = 41) String text) {
+        this.tweet = tweet;
+        this.user = user;
+        this.text = text;
+    }
+
+    public Comment() {
+    }
 
     public long getId() {
         return id;
