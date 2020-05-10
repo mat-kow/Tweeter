@@ -6,4 +6,5 @@ import pl.teo.entity.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     public User findByUserNameIgnoreCase(String userName);
     public User findByEmailIgnoreCase (String email);
+    User findById (long id);
 }

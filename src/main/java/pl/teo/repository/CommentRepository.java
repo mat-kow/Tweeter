@@ -8,7 +8,6 @@ import javax.persistence.Id;
 import java.util.List;
 
 public interface CommentRepository extends JpaRepository<Comment, Id> {
-    List<Comment> findAllByOrderByCreatedAsc();
-    List<Comment> findAllByUserIdOrderByCreatedAsc(long id);
-    List<Comment> findAllByTweetIdOrderByCreatedAsc(long id);
+    List<Comment> findAllByTweetIdOrderByCreatedDesc(long id);
+
 }

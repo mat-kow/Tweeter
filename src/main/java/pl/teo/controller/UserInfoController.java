@@ -32,8 +32,6 @@ public class UserInfoController {
         }
         List<Tweet> tweets = tweetRepository.findAllByUserIdOrderByCreatedDesc(user.getId());
         model.addAttribute("tweetList",tweets);
-        List<Comment> commentList = commentRepository.findAllByOrderByCreatedAsc();
-        model.addAttribute("commentList", commentList);
         return "userInfo";
     }
 

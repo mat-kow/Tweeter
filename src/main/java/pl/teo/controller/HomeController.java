@@ -21,9 +21,6 @@ public class HomeController {
     public String homepage(Model model){
         List tweetList = tweetRepository.findAllByOrderByCreatedDesc();
         model.addAttribute("tweetList", tweetList);
-        List<Comment> commentList = commentRepository.findAllByOrderByCreatedAsc();
-        model.addAttribute("commentList", commentList);
-
         return "home.jsp";
     }
 }

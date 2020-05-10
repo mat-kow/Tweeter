@@ -17,8 +17,8 @@ public class Comment {
     private User user;
     @CreationTimestamp
     private Timestamp created;
-    @Size(min = 1, max = 41)
-    @Column(length = 11)
+    @Size(min = 1, max = 60)
+    @Column(length = 60)
     private String text;
 
     public Comment(Tweet tweet, User user, @Size(min = 1, max = 41) String text) {

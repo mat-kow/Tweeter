@@ -54,9 +54,8 @@ public class TweetController {
         model.addAttribute("hrefParam", "../");
         Tweet tweet = tweetRepository.findById(id);
         model.addAttribute("tweet", tweet);
-        List<Comment> commentList = commentRepository.findAllByTweetIdOrderByCreatedAsc(id);
+        List<Comment> commentList = commentRepository.findAllByTweetIdOrderByCreatedDesc(id);
         model.addAttribute("commentList", commentList);
-
         return "tweetInfo";
     }
 }

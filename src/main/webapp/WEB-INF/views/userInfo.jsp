@@ -20,7 +20,7 @@
 <div id="header">
     <%@ include file="../fragments/header.jsp" %>
 </div>
-<h2>Tweety użytkownika ${userName}</h2>
+<h2>Tweety użytkownika ${userName}  <a href="${hrefParam}newmessage/${userName}">Wyślij wiadomość</a></h2>
 <%@ include file="../fragments/tweetsList.jsp"%>
 
 </body>

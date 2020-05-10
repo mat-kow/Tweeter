@@ -40,3 +40,9 @@ a{
 .username{
     color: greenyellow;
 }
+a.message{
+    color: white;
+}
+tr.newMessage td{
+    font-weight: bold;
+}
