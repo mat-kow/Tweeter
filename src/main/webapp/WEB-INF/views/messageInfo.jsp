@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="pl.teo.entity.Message" %><%--
   Created by IntelliJ IDEA.
   User: teo
@@ -22,7 +23,9 @@
     <h3>Do: <a class="username" href="${hrefParam}user/${message.getReceiver().getUserName()}">${message.getReceiver().getUserName()}</a></h3>
     <h3>Treść:</h3>
     <p>${message.getText()}</p>
-
+    <c:if test="${loggedUserName != message.getSender().getUserName()}">
+        <a href="${hrefParam}newmessage/${message.getSender().getUserName()}"><button>Odpowiedz</button> </a>
+    </c:if>
 </div>
 </body>
 </html>

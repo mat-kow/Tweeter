@@ -44,7 +44,7 @@ public class TweetController {
                 .requireRelNofollowOnLinks()
                 .toFactory();
         String safeTweetContent = policy.sanitize(tweetContent);
-        Tweet tweet = new Tweet(user, safeTweetContent);
+        Tweet tweet = new Tweet(user, safeTweetContent.trim());
         tweetRepository.save(tweet);
         return "redirect:home";
     }
@@ -53,6 +53,9 @@ public class TweetController {
     public String tweetInfo(@PathVariable long id, Model model){
         model.addAttribute("hrefParam", "../");
         Tweet tweet = tweetRepository.findById(id);
+        if(tweet == null){
+            return "redirect:../home";
+        }
         model.addAttribute("tweet", tweet);
         List<Comment> commentList = commentRepository.findAllByTweetIdOrderByCreatedDesc(id);
         model.addAttribute("commentList", commentList);

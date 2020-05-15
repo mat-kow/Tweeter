@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: teo
@@ -18,11 +19,9 @@
     <h3>Zaloguj się</h3>
     <div id="form">
         <form method="post">
-            <%String errorFlag = (String)request.getAttribute("errorFlag");
-                if(errorFlag == "true"){
-                    %><span style="color:#ff0000">Niepoprawny login lub hasło</span><br/><br><%
-                }%>
-
+            <c:if test="${errorFlag == true}">
+                <span style="color:#ff0000">Niepoprawny login lub hasło</span><br/><br>
+            </c:if>
             Nazwa użytkownika:<input type="text" name="userName"><br/><br/>
             Hasło: <input type="password" name="password"><br/><br/>
             <input type="submit" value="Zaloguj">

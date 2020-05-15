@@ -43,6 +43,9 @@ public class MessageController {
             return "redirect:../login";
         }
         Message message = messageRepository.findById(id);
+        if(message == null){
+            return "redirect:../home";
+        }
         if(user.getId() != message.getSender().getId() && user.getId() != message.getReceiver().getId()){
             return "redirect:../home";
         }

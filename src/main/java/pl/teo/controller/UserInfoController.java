@@ -1,12 +1,10 @@
 package pl.teo.controller;
 
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import pl.teo.entity.Comment;
 import pl.teo.entity.Tweet;
 import pl.teo.entity.User;
 import pl.teo.repository.CommentRepository;
@@ -28,7 +26,7 @@ public class UserInfoController {
         model.addAttribute("hrefParam", "../");
         User user = userRepository.findByUserNameIgnoreCase(userName);
         if (user == null){
-            return "redirect:home";
+            return "redirect:../home";
         }
         List<Tweet> tweets = tweetRepository.findAllByUserIdOrderByCreatedDesc(user.getId());
         model.addAttribute("tweetList",tweets);

@@ -1,18 +1,10 @@
-<%@ page import="pl.teo.entity.Comment" %>
+<%--<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>--%>
+<%--<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%
-    ArrayList<Tweet> tweetList = (ArrayList) request.getAttribute("tweetList");
-    if (tweetList != null){
-        Iterator<Tweet> it = tweetList.iterator();
-        while(it.hasNext()){
-            Tweet tweet = it.next();
-            String time = new SimpleDateFormat("HH:mm dd.MM.yyyy").format(tweet.getCreated());%>
-            <hr/><h4><a class="username" href="${hrefParam}user/<%out.print(tweet.getUser().getUserName());%>">         <%--printing tweet--%>
-                <%out.print(tweet.getUser().getUserName());%></a> <span class="tweetTime"><%out.print(time);%></span></h4>
-            <p><%out.print(tweet.getTweetContent());%></p>
-            <a href="${hrefParam}tweet/<%out.print(tweet.getId());%>">Szczegóły</a><br/><%
-
-        }
-    }
-
-%>
+<c:forEach var="tweet" items="${tweetList}">
+    <fmt:formatDate pattern="HH:mm dd.MM.yyyy" value="${tweet.getCreated()}" type="BOTH" var="time" />
+    <hr/><h4><a class="username" href="${hrefParam}user/${tweet.getUser().getUserName()}">         <%--printing tweet--%>
+        ${tweet.getUser().getUserName()}</a> <span class="tweetTime">${time}</span></h4>
+    <p>${tweet.getTweetContent()}</p>
+    <a href="${hrefParam}tweet/${tweet.getId()}">Szczegóły</a><br/>
+</c:forEach>

@@ -1,3 +1,5 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="pl.teo.entity.Tweet" %>
 <%@ page import="java.util.Iterator" %>
@@ -17,12 +19,9 @@
 </head>
 <body>
     <div id="header"><%@ include file="../fragments/header.jsp"%></div>
-    <%
-        String loggedUserName = (String) session.getAttribute("loggedUserName");
-        if(loggedUserName != null){%>                           <%--    only for logged in users--%>
-            <h2>Witaj ponownie ${loggedUserName}</h2>
-        <%}
-    %>
+    <c:if test="${!empty loggedUserName}">
+        <h2>Witaj ponownie ${loggedUserName}</h2>
+    </c:if>
     <br/>
     <form method="post" action="addTweet">
         <textarea name="tweetContent" cols="80" rows="2" id="tweetText" minlength="3" maxlength="140"

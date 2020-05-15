@@ -39,7 +39,7 @@ public class CommentController {
                 .toFactory();
         String safeCommentText = policy.sanitize(commentText);
 
-        Comment comment = new Comment(tweetRepository.findById(tweetId), user, safeCommentText);
+        Comment comment = new Comment(tweetRepository.findById(tweetId), user, safeCommentText.trim());
         commentRepository.save(comment);
         url = url.replace("/Tweeter/","");
         return "redirect:" + url;

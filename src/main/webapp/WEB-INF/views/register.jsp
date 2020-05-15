@@ -1,4 +1,5 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: teo
@@ -21,17 +22,15 @@
     <form:form method="post" modelAttribute="user">
         Nazwa użytkownika:<form:input path="userName" type="text"/>
         <form:errors path="userName" style="color:red"/>
-        <%String userNameFlag = (String)request.getAttribute("userNameFlag");
-            if(userNameFlag == "true"){
-                out.print("<span style=\"color:red\">Wprowadzona nazwa użytkownika jest już zajęta</span>");
-            }%><br/><br>
+        <c:if test="${userNameFlag == true}">
+            <span style="color:red">Wprowadzona nazwa użytkownika jest już zajęta</span>
+        </c:if><br/><br>
         Hasło: <form:input path="password" type="password"/><form:errors path="password" style="color:red"/><br><br>
         Adres e-mail: <form:input path="email" type="email"/>
         <form:errors path="email" style="color:red"/>
-        <%String emailFlag = (String)request.getAttribute("emailFlag");
-            if(emailFlag == "true"){
-                out.print("<span style=\"color:red\">Wprowadzony adres e-mail jest już używany.</span>");
-            }%><br/><br>
+        <c:if test="${emailFlag == true}">
+            <span style="color:red">Wprowadzony adres e-mail jest już używany.</span>
+        </c:if><br/><br>
         Imię: <form:input path="firstName"/><form:errors path="firstName" style="color:red"/><br/><br>
         Nazwisko: <form:input path="lastName"/><form:errors path="lastName" style="color:red"/><br/><br>
         <input type="submit" value="Załóż konto">

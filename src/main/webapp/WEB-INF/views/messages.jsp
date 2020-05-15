@@ -1,7 +1,7 @@
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="pl.teo.entity.Message" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="java.text.SimpleDateFormat" %><%--
+<%@ taglib prefix = "fmt" uri = "http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri = "http://java.sun.com/jsp/jstl/functions" prefix = "fn" %>
+<%--
   Created by IntelliJ IDEA.
   User: teo
   Date: 10.05.2020
@@ -22,62 +22,54 @@
 </div>
 <div id="inbox">
     <h2>Odebrane</h2>
-    <%
-        ArrayList<Message> inbox = (ArrayList) request.getAttribute("inbox");
-        if(inbox.isEmpty()){%>
-    <p>Brak wiadomości</p>
-    <%}
-    else{%>
-    <table>
-        <tr>
-            <th>Od:</th>
-            <th>Odebrano:</th>
-            <th>Treść</th>
-        </tr>
-        <%for (Message message : inbox) {
-            String text = message.getText();
-            text = text.substring(0, Math.min(text.length(), 30));;
-            String time = new SimpleDateFormat("HH:mm dd.MM.yyyy").format(message.getSent());%>
-        <tr <%
-                    if (message.isNew()) {
-                        %>class="newMessage"<%
-            }%>>
-            <td><a class="message" href="message/<%out.print(message.getId());%>"><%out.print(message.getSender().getUserName());%></a></td>
-            <td><a class="message" href="message/<%out.print(message.getId());%>"><%out.print(time);%></a></td>
-            <td><a class="message" href="message/<%out.print(message.getId());%>"><%out.print(text);%></a></td>
-        </tr>
-        <%}%>
-    </table>
-    <%}
-    %>
+    <c:if test="${empty inbox}">
+        <p>Brak wiadomości</p>
+    </c:if>
+    <c:if test="${!empty inbox}">
+        <table>
+            <tr>
+                <th>Od:</th>
+                <th>Odebrano:</th>
+                <th>Treść</th>
+            </tr>
+            <c:forEach var="message" items="${inbox}">
+                <c:set var="text" value="${fn:substring(message.getText(),0,30)}"/>
+                <fmt:formatDate pattern="HH:mm dd.MM.yyyy" value="${message.getSent()}" type="BOTH" var="time" />
+                <tr
+                        <c:if test="${message.isNew()}">
+                            class="newMessage"
+                        </c:if>>
+                    <td><a class="message" href="message/${message.getId()}">${message.getSender().getUserName()}</a></td>
+                    <td><a class="message" href="message/${message.getId()}">${time}</a></td>
+                    <td><a class="message" href="message/${message.getId()}">${text}</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
 </div>
 <div id="outbox">
     <h2>Wysłane</h2>
-    <%
-        ArrayList<Message> outbox = (ArrayList) request.getAttribute("outbox");
-        if(outbox.isEmpty()){%>
-    <p>Brak wiadomości</p>
-    <%}
-    else{%>
-    <table>
-        <tr>
-            <th>Do:</th>
-            <th>Wysłano:</th>
-            <th>Treść</th>
-        </tr>
-        <%for (Message message : outbox) {
-            String text = message.getText();
-            text = text.substring(0, Math.min(text.length(), 30));;
-            String time = new SimpleDateFormat("HH:mm dd.MM.yyyy").format(message.getSent());%>
-        <tr>
-            <td><a class="message" href="message/<%out.print(message.getId());%>"><%out.print(message.getReceiver().getUserName());%></a></td>
-            <td><a class="message" href="message/<%out.print(message.getId());%>"><%out.print(time);%></a></td>
-            <td><a class="message" href="message/<%out.print(message.getId());%>"><%out.print(text);%></a></td>
-        </tr>
-        <%}%>
-    </table>
-    <%}
-    %>
+    <c:if test="${empty outbox}">
+        <p>Brak wiadomości</p>
+    </c:if>
+    <c:if test="${!empty outbox}">
+        <table>
+            <tr>
+                <th>Do:</th>
+                <th>Wysłano:</th>
+                <th>Treść</th>
+            </tr>
+            <c:forEach var="message" items="${outbox}">
+                <c:set var="text" value="${fn:substring(message.getText(),0,30)}"/>
+                <fmt:formatDate pattern="HH:mm dd.MM.yyyy" value="${message.getSent()}" type="BOTH" var="time" />
+                <tr>
+                    <td><a class="message" href="message/${message.getId()}">${message.getSender().getUserName()}</a></td>
+                    <td><a class="message" href="message/${message.getId()}">${time}</a></td>
+                    <td><a class="message" href="message/${message.getId()}">${text}</a></td>
+                </tr>
+            </c:forEach>
+        </table>
+    </c:if>
 </div>
 </body>
 </html>

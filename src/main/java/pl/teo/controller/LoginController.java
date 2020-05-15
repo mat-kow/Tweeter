@@ -3,14 +3,13 @@ package pl.teo.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 import pl.teo.entity.User;
 import pl.teo.repository.UserRepository;
 import org.mindrot.jbcrypt.BCrypt;
+
+import javax.servlet.http.HttpSession;
 
 @Controller
 @SessionAttributes("loggedUserName")
@@ -19,7 +18,12 @@ public class LoginController {
     public UserRepository userRepository;
 
     @RequestMapping(method = RequestMethod.GET, value = "login")
-    public String loginForm() {
+    public String loginForm(HttpSession session) {
+        User user = userRepository.findByUserNameIgnoreCase((String)session.getAttribute("loggedUserName"));
+        if(user != null){
+            return "redirect:home";
+        }
+
         return "login.jsp";
     }
 
@@ -36,7 +40,7 @@ public class LoginController {
         }
         if(BCrypt.checkpw(password, user.getPassword())){
             model.addAttribute("loggedUserName", user.getUserName());
-            return "loginOk.jsp";
+            return "redirect:home";
         }
         model.addAttribute("errorFlag", "true");
         return "login.jsp";

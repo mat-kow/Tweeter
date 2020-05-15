@@ -1,7 +1,5 @@
-<%@ page import="pl.teo.entity.Tweet" %>
-<%@ page import="java.util.ArrayList" %>
-<%@ page import="java.util.Iterator" %>
-<%@ page import="java.text.SimpleDateFormat" %><%--
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%--
   Created by IntelliJ IDEA.
   User: teo
   Date: 03.05.2020
